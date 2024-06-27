@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 @RestController
@@ -58,19 +59,16 @@ public class UserController
         }
     }
 
-    @PutMapping("/updateScore/{email}/{score}")
-    public String updateScore(@PathVariable String email, @PathVariable int score)
-    {
-        User P1 = repo.findByEmail(email);
-        if(P1 != null)
-        {
-            P1.setScore(score);
-            repo.save(P1);
-            return "Score of user " +P1.getEmail()+ " is now " +P1.getScore() ;
-        }
-        else
-        {
-            return "User not found with email";
+    @PutMapping("/updateScore/{id}/{score}")
+    public String updateScore(@PathVariable Long id, @PathVariable int score) {
+        Optional<User> P1 = repo.findById(id);
+        if (P1.isPresent()) {
+            User user = P1.get();
+            user.setScore(score);
+            repo.save(user);
+            return "Score updated successfully for user ID: " + id;
+        } else {
+            return "User not found with ID: " + id;
         }
     }
 
