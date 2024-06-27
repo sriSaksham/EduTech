@@ -1,6 +1,7 @@
 package com.EduTech.Model;
 
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Table
@@ -8,28 +9,32 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     private Long id;
     private String firstName;
     private String lastName;
     private String userName;
     private String password;
     private String email;
+    private String phoneNumber;
     private int score;
 
-
+    private LocalDateTime registrationTime;
 
     public User() {
     }
 
-    public User(String lastName, String firstName, String userName, String password, String email, int score) {
+    public User(String lastName, String firstName, String userName, String password, String email, String phoneNumber, int score, LocalDateTime registrationTime) {
         this.lastName = lastName;
         this.firstName = firstName;
         this.userName = userName;
         this.password = password;
         this.email = email;
+        this.phoneNumber = phoneNumber;
         this.score = score;
+        this.registrationTime = registrationTime;
     }
+
+    // Getters and setters
 
     public Long getId() {
         return id;
@@ -79,12 +84,28 @@ public class User {
         this.email = email;
     }
 
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
     public int getScore() {
         return score;
     }
 
     public void setScore(int score) {
         this.score = score;
+    }
+
+    public LocalDateTime getRegistrationTime() {
+        return registrationTime;
+    }
+
+    public void setRegistrationTime(LocalDateTime registrationTime) {
+        this.registrationTime = registrationTime;
     }
 
     @Override
@@ -96,10 +117,9 @@ public class User {
                 ", firstName='" + firstName + '\'' +
                 ", id=" + id +
                 ", email='" + email + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
                 ", score=" + score +
+                ", registrationTime=" + registrationTime +
                 '}';
     }
 }
-
-
-

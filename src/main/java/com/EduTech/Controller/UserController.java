@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.regex.Pattern;
@@ -43,7 +44,13 @@ public class UserController
         if (!isValidPassword(user.getPassword())) {
             return "Password does not meet the requirements";
         }
+
+        if (!isValidPhoneNumber(user.getPhoneNumber())) {
+            return "Phone number must be exactly 10 digits";
+        }
+
         user.setScore(0);
+        user.setRegistrationTime(LocalDateTime.now());
 
         repo.save(user);
         return "User registered successfully";
@@ -72,8 +79,26 @@ public class UserController
         }
     }
 
+    @PutMapping("/updatePassword/{id}/{password}")
+    public String updatePassword(@PathVariable Long id, @PathVariable String password)
+    {
+        Optional<User> P1 = repo.findById(id);
+        if (P1.isPresent())
+        {
+            User user = P1.get();
+            user.setPassword(password);
+            repo.save(user);
+            return "Password updated successfully";
+        }
+        else
+        {
+            return "User not found with id";
+        }
 
-    @DeleteMapping("/delete/{email}")
+    }
+
+
+    /*@DeleteMapping("/delete/{email}")
     public String deleteUserByEmail(@PathVariable String email)
     {
         User P1 = repo.findByEmail(email);
@@ -87,6 +112,8 @@ public class UserController
         }
         return "User associated with " + email + " is now deleted";
     }
+
+     */
 
 
     private boolean isValidPassword(String password) {
@@ -113,5 +140,8 @@ public class UserController
         Pattern pat = Pattern.compile(emailRegex);
         return email != null && pat.matcher(email).matches();
     }
-    //this is new
+    private boolean isValidPhoneNumber(String phoneNumber) {
+        return phoneNumber != null && phoneNumber.matches("\\d{10}");
+    }
+
 }
