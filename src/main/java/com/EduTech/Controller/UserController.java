@@ -115,4 +115,5 @@ public class UserController
         Pattern pat = Pattern.compile(emailRegex);
         return email != null && pat.matcher(email).matches();
     }
+    //this is new
 }
