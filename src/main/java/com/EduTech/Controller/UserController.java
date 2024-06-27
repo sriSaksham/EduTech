@@ -1,6 +1,7 @@
 package com.EduTech.Controller;
 
 import com.EduTech.Model.User;
+import com.EduTech.Service.EmailService;
 import com.EduTech.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,10 @@ public class UserController
 
     @Autowired
     private UserRepo repo;
+
+    @Autowired
+    private EmailService emailService;
+
 
     @GetMapping("/getAll")
     public List <User> getAllUsers()
@@ -53,7 +58,18 @@ public class UserController
         user.setRegistrationTime(LocalDateTime.now());
 
         repo.save(user);
+
+        String subject = "Registration Successful";
+        String body = "Dear " + user.getFirstName() + " " + user.getLastName() + ",\n\n" +
+                "Your registration was successful.\n\n" +
+                "Best regards,\nEduTech Team";
+
+
+        emailService.sendEmail(user.getEmail(), subject, body);
+
         return "User registered successfully";
+
+
     }
 
     @PostMapping("/login/{email}/{password}")
