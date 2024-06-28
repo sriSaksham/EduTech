@@ -64,7 +64,6 @@ public class UserController
                 "Your registration was successful.\n\n" +
                 "Best regards,\nEduTech Team";
 
-
         emailService.sendEmail(user.getEmail(), subject, body);
 
         return "User registered successfully";
@@ -114,7 +113,7 @@ public class UserController
     }
 
 
-    /*@DeleteMapping("/delete/{email}")
+    @DeleteMapping("/delete/{email}")
     public String deleteUserByEmail(@PathVariable String email)
     {
         User P1 = repo.findByEmail(email);
@@ -129,7 +128,7 @@ public class UserController
         return "User associated with " + email + " is now deleted";
     }
 
-     */
+
 
 
     private boolean isValidPassword(String password) {
